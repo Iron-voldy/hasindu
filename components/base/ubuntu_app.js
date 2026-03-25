@@ -19,7 +19,14 @@ export class UbuntuApp extends Component {
                 tabIndex={0}
             >
                 <div className="relative">
-                    <img width="40px" height="40px" className="mb-1 w-10" src={this.props.icon} alt={"Ubuntu " + this.props.name} />
+                    <img
+                        width={this.props.iconSize || 40}
+                        height={this.props.iconSize || 40}
+                        className="mb-1"
+                        style={{ width: this.props.iconSize || 40, height: this.props.iconSize || 40, ...(this.props.icon && this.props.icon.endsWith('.gif') ? { mixBlendMode: 'screen', background: 'transparent' } : {}) }}
+                        src={this.props.icon}
+                        alt={"Ubuntu " + this.props.name}
+                    />
                     {this.props.isExternalApp && (
                         <img 
                             src="./themes/Yaru/status/arrow-up-right.svg" 

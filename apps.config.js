@@ -7,6 +7,7 @@ import { displayTrash } from './components/apps/trash';
 import { displayGedit } from './components/apps/gedit';
 import { displayAboutVivek } from './components/apps/vivek';
 import { displayTerminalCalc } from './components/apps/calc';
+import { displayLiaAI } from './components/apps/lia';
 
 const apps = [
     {
@@ -29,7 +30,7 @@ const apps = [
     },
     {
         id: "about-vivek",
-        title: "About Vivek",
+        title: "About Hasindu",
         icon: './themes/Yaru/system/user-home.png',
         disabled: false,
         favourite: true,
@@ -98,7 +99,7 @@ const apps = [
         favourite: false,
         desktop_shortcut: true,
         isExternalApp: true,
-        url: "https://github.com/vivek9patel",
+        url: "https://github.com/Iron-voldy",
         screen: () => {},
     },
     {
@@ -109,7 +110,17 @@ const apps = [
         favourite: false,
         desktop_shortcut: true,
         isExternalApp: true,
-        url: "https://www.vivek9patel.com/tars"
+        url: "https://www.linkedin.com/in/hasindu-wanninayake-1ab155276/"
+    },
+    {
+        id: "lia-ai",
+        title: "LIA AI",
+        icon: './images/logos/bot_icon.png',
+        iconSize: 56,
+        disabled: false,
+        favourite: true,
+        desktop_shortcut: true,
+        screen: displayLiaAI,
     },
 ]
 

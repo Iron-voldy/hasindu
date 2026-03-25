@@ -16,6 +16,7 @@ export class Window extends Component {
             height: 85,
             closed: false,
             maximized: false,
+            mounted: false,
             parentSize: {
                 height: 100,
                 width: 100
@@ -42,10 +43,15 @@ export class Window extends Component {
 
     setDefaultWindowDimenstion = () => {
         if (window.innerWidth < 640) {
-            this.setState({ height: 60, width: 85 }, this.resizeBoundries);
-        }
-        else {
-            this.setState({ height: 85, width: 60 }, this.resizeBoundries);
+            const width = 85, height = 60;
+            this.startX = Math.max(0, (window.innerWidth * (1 - width / 100)) / 2);
+            this.startY = Math.max(0, (window.innerHeight * (1 - height / 100) - 28) / 2);
+            this.setState({ height, width, mounted: true }, this.resizeBoundries);
+        } else {
+            const width = 60, height = 85;
+            this.startX = Math.max(0, (window.innerWidth * (1 - width / 100)) / 2);
+            this.startY = Math.max(0, (window.innerHeight * (1 - height / 100) - 28) / 2);
+            this.setState({ height, width, mounted: true }, this.resizeBoundries);
         }
     }
 
@@ -160,6 +166,7 @@ export class Window extends Component {
     }
 
     render() {
+        if (!this.state.mounted) return null;
         return (
             <Draggable
                 axis="both"
