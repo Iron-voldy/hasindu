@@ -58,7 +58,14 @@ export function LiaAI() {
                 body: JSON.stringify({ messages: newMessages }),
             });
             const data = await res.json();
-            const reply = data.reply || "Sorry, I couldn't get a response. Please try again.";
+            let reply;
+            if (res.ok && data.reply) {
+                reply = data.reply;
+            } else {
+                reply = data.error
+                    ? `⚠️ ${data.error}`
+                    : "Sorry, I couldn't get a response. Please try again.";
+            }
             setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
         } catch {
             setMessages(prev => [...prev, { role: 'assistant', content: "⚠️ Connection error. Please try again!" }]);
