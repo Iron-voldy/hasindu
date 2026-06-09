@@ -7,6 +7,7 @@ import UbuntuApp from '../base/ubuntu_app';
 import AllApplications from '../screen/all-applications'
 import DesktopMenu from '../context menus/desktop-menu';
 import DefaultMenu from '../context menus/default';
+import WelcomeOverlay from './welcome-overlay';
 import $ from 'jquery';
 import ReactGA from 'react-ga4';
 
@@ -31,6 +32,7 @@ export class Desktop extends Component {
                 default: false,
             },
             showNameBar: false,
+            showWelcome: false,
         }
     }
 
@@ -42,6 +44,10 @@ export class Desktop extends Component {
         this.setContextListeners();
         this.setEventListeners();
         this.checkForNewFolders();
+
+        if (!localStorage.getItem('portfolio-welcomed')) {
+            this.setState({ showWelcome: true });
+        }
     }
 
     componentWillUnmount() {
@@ -445,6 +451,15 @@ export class Desktop extends Component {
         this.setState({ focused_windows });
     }
 
+    closeWelcome = () => {
+        localStorage.setItem('portfolio-welcomed', 'true');
+        this.setState({ showWelcome: false });
+    }
+
+    reopenWelcome = () => {
+        this.setState({ showWelcome: true });
+    }
+
     addNewFolder = () => {
         this.setState({ showNameBar: true });
     }
@@ -538,6 +553,38 @@ export class Desktop extends Component {
                     <AllApplications apps={apps}
                         recentApps={this.app_stack}
                         openApp={this.openApp} /> : null}
+
+                {/* First-visit welcome overlay */}
+                {this.state.showWelcome && (
+                    <WelcomeOverlay
+                        onClose={this.closeWelcome}
+                        openApp={this.openApp}
+                    />
+                )}
+
+                {/* Help floater — re-opens welcome guide */}
+                {!this.state.showWelcome && (
+                    <button
+                        onClick={this.reopenWelcome}
+                        title="Show navigation guide"
+                        className="absolute flex items-center justify-center rounded-full text-white text-xs font-bold cursor-pointer"
+                        style={{
+                            bottom: '10px',
+                            right: '10px',
+                            width: '28px',
+                            height: '28px',
+                            zIndex: 80,
+                            background: 'rgba(233,84,32,0.82)',
+                            border: '1px solid rgba(255,255,255,0.18)',
+                            boxShadow: '0 2px 12px rgba(233,84,32,0.4)',
+                            transition: 'box-shadow 0.2s ease, opacity 0.15s ease',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 2px 18px rgba(233,84,32,0.7)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 12px rgba(233,84,32,0.4)'; }}
+                    >
+                        ?
+                    </button>
+                )}
 
             </div>
         )
